@@ -1,0 +1,40 @@
+
+name: Pokemon ZA iOS Preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: macos-15
+    steps:
+      - name: Checkout nxnative
+        uses: actions/checkout@v4
+
+      - name: Check nxnative source structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -d dm
+          test -d scripts
+          test -f README.md
+          echo "nxnative source structure OK"
+
+      - name: Check build tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-path
+          clang --version
+          python3 --version
+
+      - name: Check Pokemon ZA build inputs
+        shell: bash
+        run: |
+          echo "Preflight only"
+          echo "No NSP, prod.keys, or game data uploaded"
+          echo "Hybrid IPA build not configured yet"
